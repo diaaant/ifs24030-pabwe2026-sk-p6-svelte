@@ -23,7 +23,7 @@
 
 <ModalShell title="Ubah Sampul" {onClose}>
   <form onsubmit={submit} class="space-y-3" data-testid="cover-form">
-    <input type="file" accept="image/*" onchange={onFile} data-testid="cover-input" class="text-sm" />
+    <input type="file" accept="image/*" aria-label="Pilih berkas sampul" onchange={onFile} data-testid="cover-input" class="text-sm" />
     <button type="submit" class="w-full rounded-lg bg-indigo-600 text-white py-2 text-sm font-semibold">Unggah sampul</button>
   </form>
 </ModalShell>

@@ -50,7 +50,7 @@
           <span class="text-xs rounded-full bg-slate-100 px-2 py-0.5">{$linkTree.type}</span>
         </div>
         <p class="text-slate-600">{$linkTree.description}</p>
-        <p class="text-xs text-slate-400">Dibuat {formatDate($linkTree.created_at)}</p>
+        <p class="text-xs text-slate-600">Dibuat {formatDate($linkTree.created_at)}</p>
         <div class="flex flex-wrap gap-2">
           <button type="button" onclick={() => (showChange = true)}
             class="flex items-center gap-1 rounded-lg border border-slate-300 px-3 py-2 text-sm font-semibold"><Pencil size={14} /> Ubah data</button>
@@ -78,7 +78,7 @@
               </a>
               <div class="flex gap-2 shrink-0">
                 <button type="button" onclick={() => openItem(item)} aria-label={`Ubah ${item.title}`}><Pencil size={16} /></button>
-                <button type="button" onclick={() => remove(item)} aria-label={`Hapus ${item.title}`} class="text-red-500"><Trash2 size={16} /></button>
+                <button type="button" onclick={() => remove(item)} aria-label={`Hapus ${item.title}`} class="text-red-700"><Trash2 size={16} /></button>
               </div>
             </li>
           {/each}

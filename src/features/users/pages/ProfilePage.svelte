@@ -87,7 +87,7 @@
 
   <form onsubmit={savePhoto} class="bg-white border border-slate-200 rounded-xl p-4 space-y-3" data-testid="photo-form">
     <h2 class="font-semibold">Foto profil</h2>
-    <input type="file" accept="image/*" onchange={onPhoto} data-testid="photo-input" class="text-sm" />
+    <input type="file" accept="image/*" aria-label="Pilih foto profil" onchange={onPhoto} data-testid="photo-input" class="text-sm" />
     <button type="submit" class="rounded-lg bg-indigo-600 text-white px-4 py-2 text-sm font-semibold">Unggah foto</button>
   </form>
 

@@ -100,7 +100,7 @@
             </div>
             <p class="text-sm text-slate-500 line-clamp-2">{item.description}</p>
             <button type="button" onclick={() => remove(item)} aria-label={`Hapus ${item.title}`}
-              class="text-red-500 text-sm flex items-center gap-1"><Trash2 size={14} /> Hapus</button>
+              class="text-red-700 text-sm flex items-center gap-1"><Trash2 size={14} /> Hapus</button>
           </div>
         </li>
       {/each}

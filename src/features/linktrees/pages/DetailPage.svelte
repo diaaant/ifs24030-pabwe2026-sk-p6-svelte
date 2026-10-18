@@ -1,9 +1,8 @@
 <script>
   import { onMount } from "svelte";
   import { Link, Pencil, Trash2, Plus, Image } from "lucide-svelte";
-  import ChangeModal from "../modals/ChangeModal.svelte";
-  import ChangeCoverModal from "../modals/ChangeCoverModal.svelte";
-  import ItemModal from "../modals/ItemModal.svelte";
+  // Hapus import statis Modal di sini
+
   import { linkTree, loadLinkTree, removeItem } from "../states/linkTreesStore.js";
   import { link } from "../../../router.js";
   import { formatDate, handleResult, showConfirmDialog } from "../../../helpers/toolsHelper.js";
@@ -90,12 +89,19 @@
   {/if}
 </section>
 
+<!-- Dynamic Import untuk Modal agar tidak membebani render awal -->
 {#if showChange}
-  <ChangeModal linkTree={$linkTree} onClose={() => (showChange = false)} />
+  {#await import("../modals/ChangeModal.svelte") then { default: ChangeModal }}
+    <ChangeModal linkTree={$linkTree} onClose={() => (showChange = false)} />
+  {/await}
 {/if}
 {#if showCover}
-  <ChangeCoverModal {linkTreeId} onClose={() => (showCover = false)} />
+  {#await import("../modals/ChangeCoverModal.svelte") then { default: ChangeCoverModal }}
+    <ChangeCoverModal {linkTreeId} onClose={() => (showCover = false)} />
+  {/await}
 {/if}
 {#if showItem}
-  <ItemModal {linkTreeId} item={editingItem} onClose={() => (showItem = false)} />
+  {#await import("../modals/ItemModal.svelte") then { default: ItemModal }}
+    <ItemModal {linkTreeId} item={editingItem} onClose={() => (showItem = false)} />
+  {/await}
 {/if}

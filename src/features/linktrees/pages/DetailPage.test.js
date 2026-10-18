@@ -46,20 +46,23 @@ describe("DetailPage", () => {
     renderWithProviders(DetailPage, { linkTreeId: "t1" });
     await waitFor(() => expect(screen.getByTestId("detail-title")).toBeInTheDocument());
 
+    // 1. Ubah Data (Gunakan findByRole agar menunggu modal muncul)
     await fireEvent.click(screen.getByText("Ubah data"));
-    expect(screen.getByRole("dialog", { name: "Ubah Link Tree" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Ubah Link Tree" })).toBeInTheDocument();
     await fireEvent.click(screen.getByLabelText("Tutup"));
-    expect(screen.queryByRole("dialog")).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
+    // 2. Ubah Sampul
     await fireEvent.click(screen.getByText("Ubah sampul"));
-    expect(screen.getByRole("dialog", { name: "Ubah Sampul" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Ubah Sampul" })).toBeInTheDocument();
     await fireEvent.click(screen.getByLabelText("Tutup"));
-    expect(screen.queryByRole("dialog")).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
+    // 3. Tambah Tautan
     await fireEvent.click(screen.getByText("Tambah tautan"));
-    expect(screen.getByRole("dialog", { name: "Tambah Tautan" })).toBeInTheDocument();
+    expect(await screen.findByRole("dialog", { name: "Tambah Tautan" })).toBeInTheDocument();
     await fireEvent.click(screen.getByLabelText("Tutup"));
-    expect(screen.queryByRole("dialog")).toBeNull();
+    await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
   });
 
   it("mengunggah sampul dan menambah tautan sampai modal tertutup", async () => {
@@ -68,12 +71,16 @@ describe("DetailPage", () => {
     await waitFor(() => expect(screen.getByTestId("detail-title")).toBeInTheDocument());
 
     await fireEvent.click(screen.getByText("Ubah sampul"));
+    // Gunakan findByTestId untuk menunggu input dari modal yang di-lazy load
+    const input = await screen.findByTestId("cover-input");
     const file = new File(["x"], "c.png", { type: "image/png" });
-    await fireEvent.change(screen.getByTestId("cover-input"), { target: { files: [file] } });
+    await fireEvent.change(input, { target: { files: [file] } });
     await fireEvent.submit(screen.getByTestId("cover-form"));
     await waitFor(() => expect(screen.queryByRole("dialog")).toBeNull());
 
     await fireEvent.click(screen.getByText("Tambah tautan"));
+    // Tunggu modal form tautan muncul sebelum mengisi input
+    await screen.findByRole("dialog", { name: "Tambah Tautan" });
     await fireEvent.input(screen.getByLabelText("Judul tautan"), { target: { value: "Blog" } });
     await fireEvent.input(screen.getByLabelText("URL"), { target: { value: "https://blog.dev" } });
     await fireEvent.submit(screen.getByTestId("item-form"));
@@ -85,7 +92,8 @@ describe("DetailPage", () => {
     renderWithProviders(DetailPage, { linkTreeId: "t1" });
     await waitFor(() => expect(screen.getAllByTestId("item")).toHaveLength(1));
     await fireEvent.click(screen.getByLabelText("Ubah GitHub"));
-    expect(screen.getByRole("dialog", { name: "Ubah Tautan" })).toBeInTheDocument();
+    // Gunakan findByRole
+    expect(await screen.findByRole("dialog", { name: "Ubah Tautan" })).toBeInTheDocument();
   });
 
   it("hapus tautan (dibatalkan lalu dikonfirmasi)", async () => {

@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { svelteTesting } from "@testing-library/svelte/vite";
 import tailwindcss from "@tailwindcss/vite";
+import critical from "vite-plugin-critical-css"; // <-- Plugin baru
 import process from "process";
 
 export default defineConfig(({ mode }) => {
@@ -14,6 +15,7 @@ export default defineConfig(({ mode }) => {
       }),
       tailwindcss(),
       svelteTesting(),
+      critical(), // <-- Plugin CSS Kritis untuk atasi Render Blocking
     ],
     server: {
       port: Number(env.APP_PORT) || 3004,
@@ -23,10 +25,23 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 1500,
+      // Tambahan untuk memecah file JS (Reduce unused JS)
+      rollupOptions: {
+        output: {
+          manualChunks(id) {
+            if (id.includes("node_modules")) {
+              if (id.includes("sweetalert2")) return "vendor-sweetalert";
+              if (id.includes("@toast-ui")) return "vendor-editor";
+              if (id.includes("lucide-svelte")) return "vendor-icons";
+              return "vendor";
+            }
+          },
+        },
+      },
     },
     define: {
       DELCOM_BASEURL: JSON.stringify(
-        env.VITE_DELCOM_BASEURL || "http://localhost:8000/api/v1"
+        env.VITE_DELCOM_BASEURL || "http://localhost:8000/api/v1",
       ),
     },
     test: {

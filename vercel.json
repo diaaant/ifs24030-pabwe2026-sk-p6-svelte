@@ -1,16 +1,12 @@
 {
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "headers": [
+    {
+      "source": "/api/proxy/:match*",
+      "destination": "https://open-api.delcom.org/api/v1/:match*"
+    },
     {
       "source": "/(.*)",
-      "headers": [
-        {
-          "key": "Access-Control-Allow-Headers",
-          "value": "Authorization, Content-Type"
-        }
-      ]
+      "destination": "/index.html"
     }
   ]
 }

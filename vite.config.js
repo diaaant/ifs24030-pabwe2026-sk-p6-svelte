@@ -2,7 +2,7 @@ import { defineConfig, loadEnv } from "vite";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { svelteTesting } from "@testing-library/svelte/vite";
 import tailwindcss from "@tailwindcss/vite";
-import critical from "vite-plugin-critical-css"; // <-- Plugin baru
+import cssInjectedByJsPlugin from "vite-plugin-css-injected-by-js"; // Plugin yang aman untuk Vercel
 import process from "process";
 
 export default defineConfig(({ mode }) => {
@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
       }),
       tailwindcss(),
       svelteTesting(),
-      critical(), // <-- Plugin CSS Kritis untuk atasi Render Blocking
+      cssInjectedByJsPlugin(), // <-- Gunakan ini
     ],
     server: {
       port: Number(env.APP_PORT) || 3004,
@@ -25,7 +25,6 @@ export default defineConfig(({ mode }) => {
     },
     build: {
       chunkSizeWarningLimit: 1500,
-      // Tambahan untuk memecah file JS (Reduce unused JS)
       rollupOptions: {
         output: {
           manualChunks(id) {
@@ -41,7 +40,7 @@ export default defineConfig(({ mode }) => {
     },
     define: {
       DELCOM_BASEURL: JSON.stringify(
-        env.VITE_DELCOM_BASEURL || "http://localhost:8000/api/v1",
+        env.VITE_DELCOM_BASEURL || "http://localhost:8000/api/v1"
       ),
     },
     test: {

@@ -1,15 +1,24 @@
-import Swal from "sweetalert2";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
 
-const dialog = (icon, title, text) =>
-  Swal.fire({ icon, title, text, confirmButtonColor: "#4f46e5" });
+// Fungsi pembantu untuk memuat SweetAlert secara dinamis (Lazy Load)
+// Ini akan memotong ukuran JavaScript awal agar web lebih cepat dibuka
+const getSwal = async () => {
+  const Swal = (await import("sweetalert2")).default;
+  return Swal;
+};
+
+const dialog = async (icon, title, text) => {
+  const Swal = await getSwal();
+  return Swal.fire({ icon, title, text, confirmButtonColor: "#4f46e5" });
+};
 
 export const showSuccessDialog = (message) => dialog("success", "Berhasil", message);
 export const showErrorDialog = (message) => dialog("error", "Gagal", message);
 export const showWarningDialog = (message) => dialog("warning", "Perhatian", message);
 
 export async function showConfirmDialog(message) {
+  const Swal = await getSwal();
   const result = await Swal.fire({
     icon: "warning",
     title: "Konfirmasi",
